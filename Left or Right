@@ -1,0 +1,143 @@
+#include <bits/stdc++.h>
+#define ll long
+#define sl(a) scanf("%lld",&a)
+using namespace std;
+void fastscan(ll &number)
+{
+    //variable to indicate sign of input number
+    bool negative = false;
+    register ll c;
+ 
+    number = 0;
+ 
+    // extract current character from buffer
+    c = getchar();
+    if (c=='-')
+    {
+        // number is negative
+        negative = true;
+ 
+        // extract the next character from the buffer
+        c = getchar();
+    }
+ 
+    // Keep on extracting characters if they are integers
+    // i.e ASCII Value lies from '0'(48) to '9' (57)
+    for (; (c>47 && c<58); c=getchar())
+        number = number *10 + c - 48;
+ 
+    // if scanned input has a negative sign, negate the
+    // value of the input number
+    if (negative)
+        number *= -1;
+}
+int main()
+{
+    //ios_base::sync_with_stdio(false);
+   cin.tie(NULL);
+   cout.tie(NULL);
+    ll n,q,val;
+    fastscan(n);
+    fastscan(q);
+    vector <ll> arr(n);
+    unordered_map<ll,ll> mp;
+    for(ll i=0 ; i<n ; i++)
+    {
+        sl(arr[i]);
+         mp[arr[i]]++;
+    }
+    ll ind ,src,dest;
+    char type;
+    while(q--)
+    {
+        cin>>src>>dest>>type;
+       
+        if(mp[dest] == 0)
+            cout << "-1\n";
+        else if(mp[dest] == 1)
+        {
+           auto i1= find(begin(arr) , end(arr),dest);
+        if(i1-begin(arr) == src)
+            cout << "0\n";
+        else
+          {
+            ll pos = i1-begin(arr);
+            if(pos > src)
+            {
+                if(type == 'R')
+                    cout << pos-src << endl;
+                else
+                    cout << src+n-pos << endl;
+ 
+            }
+            else
+            {
+                if(type == 'L')
+                    cout << src-pos << endl;
+                else
+                    cout << pos+n-src << endl;
+            }
+           }
+        }
+        else
+        {
+ 
+       ll index = src ;
+        ll point = dest;
+         ll c =0;
+        if(arr[index] == point)
+            c= 0;
+ 
+        else if(type == 'L')
+        {
+            //cout << "L";
+            ll ind = (index-1+n)%n;
+            c=1;
+            while(true)
+            {
+              if(ind == index)
+              {
+                  c=-1;
+ 
+                  break;
+              }
+              if(arr[ind] == point)
+              {
+                    break;
+              }
+ 
+              ind=(ind-1+n)%n;
+              c++;
+             
+            }
+        }
+        else if(type == 'R')
+        {
+            //cout << "R";
+             ll ind = (index+1)%n;
+            c=1;
+            while(true)
+            {
+               if(ind == index)
+              {
+                  c=-1;
+                  break;
+              }
+              if(arr[ind] == point)
+              {
+                    break;
+              }
+ 
+              ind=(ind+1)%n;
+              c++;
+            }
+        }
+ 
+        cout<<c<<endl;
+        
+        }
+ 
+    }
+ 
+	return 0;
+}
