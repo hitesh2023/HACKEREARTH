@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+ map <char,int> m1;
+char a,b;
+map <char,char> m2;
+int main()
+{
+    int n;
+    cin >> n;
+    assert(n<=100001);
+
+    for(int i=0 ; i<26 ; i++)
+    {
+        m1['A'+i]=i;
+    }
+    for(int i=0 ; i<n; i++)
+    {
+        cin >> a >> b;
+        swap(m1[a],m1[b]);
+    }
+    for(auto i1 = begin(m1) ; i1 != end(m1) ; ++i1)
+    {
+        m2[i1->second+'A']=i1->first;
+        m2[i1->second+'a']=i1->first+32;
+    }
+    string str="";
+    char s;
+    while(cin>>s && s!=EOF)
+    {
+        str+=s;
+    }
+    int  k= str.length();
+    for(int i=0 ; i<k ; i++)
+    {
+        if(m2[str[i]])
+            cout <<m2[str[i]];
+        else
+            cout << str[i];
+    }
+}
