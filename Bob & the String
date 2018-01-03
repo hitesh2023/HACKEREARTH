@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+#include<stdlib.h>
+#define pb push_back
+#define pp pair
+#define mp make_pair
+#define mod 100000
+#define ll long long
+#define pie 3.141592653589793
+#define sc(a) scanf("%c",&a)
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define F first
+#define S second
+#define INF 0x3f3f3f3f
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+#define RFOR(i,j,k,dc) for(ll i=j ; i>=k; i=i-dc)
+
+using namespace std;
+int main()
+{
+    std:ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+    ll test;
+    sl(test);
+
+    while(test--)
+    {
+        string a,b;
+        cin >> a >> b;
+        unordered_map<char,ll> amap;
+        unordered_map<char,ll> bmap;
+        FOR(i,0,a.length(),1)
+          amap[a.at(i)]++;
+
+        FOR(i,0,b.length(),1)
+          bmap[b.at(i)]++;
+
+
+
+        ll ct=0;
+        for(auto i1 = begin(bmap) ; i1 != end(bmap) ; ++i1)
+        {
+            if(bmap[i1->first] > amap[i1->first])
+            {
+                ct+=bmap[i1->first]-amap[i1->first];
+                bmap[i1->first]=amap[i1->first];
+            }
+        }
+
+        for(auto i1 = begin(amap) ; i1 != end(amap) ; ++i1)
+        {
+            if(amap[i1->first] > bmap[i1->first])
+            {
+                 ct+=amap[i1->first]-bmap[i1->first];
+                amap[i1->first]=bmap[i1->first];
+            }
+        }
+        cout << ct << endl;
+        amap.clear() , bmap.clear();
+
+    }
+   return 0;
+}
