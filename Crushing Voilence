@@ -1,0 +1,96 @@
+
+#include <bits/stdc++.h>
+#include<stdlib.h>
+#define pb push_back
+#define pp pair
+#define mp make_pair
+#define mod 100000
+#define ll long long
+#define pie 3.141592653589793
+#define sc(a) scanf("%c",&a)
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define F first
+#define S second
+#define INF 0x3f3f3f3f
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+#define RFOR(i,j,k,dc) for(ll i=j ; i>=k; i=i-dc)
+
+using namespace std;
+int main()
+{
+    std:ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+    ll test;
+    sl(test);
+    while(test--)
+    {
+        ll n ,val;
+        sl(n);
+
+        unordered_map<ll,ll> boys,girls;
+        FOR(i,1,n+1,1)
+        {
+            sl(val);
+            boys[i]=val;
+        }
+        FOR(i,1,n+1,1)
+        {
+            sl(val);
+            girls[i]=val;
+        }
+        unordered_map<ll,ll>boybeat,girlbeat;
+        for(auto i1 = begin(boys) ; i1 != end(boys) ; ++i1)
+        {
+            if(girls[i1->second] != i1->first)
+            {
+                boybeat[girls[i1->second]]++;
+            }
+        }
+        for(auto i1 = begin(girls) ; i1 != end(girls) ; ++i1)
+        {
+            if(boys[i1->second] != i1->first)
+            {
+                girlbeat[boys[i1->second]]++;
+            }
+        }
+        ll c=0;
+        for(auto i1 = begin(boys) ; i1 != end(boys) ; ++i1)
+        {
+            int cmpBoy=girls[i1->second];
+            if(i1->first != cmpBoy && (girls[boys[i1->first]] == cmpBoy && girls[boys[cmpBoy]] == i1->first) )
+                c++;
+        }
+
+       /* for(auto i1 = begin(girls) ; i1 != end(girls) ; ++i1)
+        {
+           int cmpgirl=boys[i1->second];
+            if(i1->first != cmpgirl && boys[girls[i1->first]] == cmpgirl && boys[girls[cmpgirl]] == i1->first)
+                c++;
+        }*/
+        ll mx =0;
+        for(auto i1 =begin(boybeat) ; i1 != end(boybeat) ; ++i1)
+        {
+            mx = max(mx,i1->second);
+        }
+        for(auto i1 =begin(girlbeat) ; i1 != end(girlbeat) ; ++i1)
+        {
+            mx = max(i1->second,mx);
+        }
+        cout << mx << " " << c << endl;
+
+        boys.clear();
+        girls.clear();
+        boybeat.clear();
+        girlbeat.clear();
+
+    }
+   return 0;
+}
