@@ -1,0 +1,109 @@
+#include <bits/stdc++.h>
+#include<stdlib.h>
+#define pb push_back
+#define pp pair
+#define mod 100000
+#define ll long long
+#define pie 3.141592653589793
+#define sc(a) scanf("%c",&a)
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define F first
+#define S second
+#define INF 0x3f3f3f3f
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+#define RFOR(i,j,k,dc) for(ll i=j ; i>=k; i=i-dc)
+using namespace std;
+
+class Disjoint
+{
+private:
+    ll *parent; //parent of a node
+    ll *sz; //pathCompression
+     // max of that group
+
+public:
+    ll *mx;
+    Disjoint(ll n)
+    {
+         parent = new ll [n+1];
+         sz = new ll [n+1];
+         mx= new ll [n+1];
+         FOR(i,1,n+1,1)
+         {
+            parent[i] =i;
+            mx[i] =i;
+            sz[i] =1;
+         }
+    }
+
+    ll par(ll c)
+    {
+        if(c == parent[c])
+            return c;
+        return par(parent[c]);
+    }
+
+    void unn(ll a  , ll b)
+    {
+        if(par(a) == par(b))
+            return;
+        ll par_a = par(a);
+        ll par_b = par(b);
+
+
+        if(mx[par_a] > mx[par_b])
+        {
+            mx[par_b] = mx[par_a];
+        }
+        else
+        {
+            mx[par_a] = mx[par_b];
+        }
+        if(sz[par_a] < sz[par_b])
+        {
+            sz[par_b] += sz[par_a];
+            parent[par_a] = par_b;
+        }
+        else
+        {
+           sz[par_a] += sz[par_b];
+            parent[par_b] = par_a;
+
+        }
+
+    }
+};
+int main()
+{
+    ll n , m;
+    sl(n) , sl(m);
+    Disjoint d(n);
+    while(m--)
+    {
+        ll u , v;
+        sl(u) , sl(v);
+        d.unn(u , v);
+    }
+    ll k;
+    sl(k);
+    while(k--)
+    {
+        ll u , v;
+        sl(u) , sl(v);
+        if(d.par(u) == d.par(v))
+            cout << "TIE\n";
+        else if(d.mx[d.par(u)] < d.mx[d.par(v)])
+             cout << v << "\n";
+        else
+            cout << u << "\n";
+    }
+   return 0;
+}
+
