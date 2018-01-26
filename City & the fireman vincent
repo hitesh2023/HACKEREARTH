@@ -1,0 +1,111 @@
+#include <bits/stdc++.h>
+#define mod 1000000007
+#define sc(a) scanf("%c",&a)
+#define ll long long
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+using namespace std;
+
+
+class Disjoint
+{
+  private:
+      ll *parent;
+      ll *sz;
+      ll *mn;
+
+  public:
+    Disjoint(ll n , ll *arr)
+    {
+        parent= new ll[n+1];
+        sz= new ll[n+1];
+        mn= new ll[n+1];
+        FOR(i,1,n+1 ,1)
+        {
+            parent[i] =i;
+            sz[i] =1;
+            mn[i] =arr[i];
+        }
+    }
+
+    ll find_parent(ll a)
+    {
+        if(a == parent[a])
+            return a;
+
+        return find_parent(parent[a]);
+    }
+
+    void find_union(ll a ,ll b)
+    {
+        if(find_parent(a) == find_parent(b))
+            return;
+
+        if(mn[find_parent(a)] <= mn[find_parent(b)])
+        {
+            mn[find_parent(b)] = mn[find_parent(a)];
+        }
+        else
+        {
+            mn[find_parent(a)] = mn[find_parent(b)];
+        }
+        if(sz[find_parent(a)] <= sz[find_parent(b)])
+        {
+            sz[find_parent(b)] += sz[find_parent(a)];
+            parent[find_parent(a)] = find_parent(b);
+        }
+        else
+        {
+            sz[find_parent(a)] += sz[find_parent(b)];
+            parent[find_parent(b)] = find_parent(a);
+        }
+
+    }
+
+    ll find_ans(ll * arr , ll n)
+    {
+        ll ans=1;
+        unordered_map <ll ,  ll> result;
+
+        FOR(i,1,n+1,1)
+        {
+            if(arr[i] == mn[find_parent(i)])
+            {
+                result[find_parent(i)]++;
+            }
+        }
+        for(auto i1 = begin(result) ; i1 != end(result) ; ++i1)
+        {
+            ans =( ans* i1->second) %mod;
+        }
+        return ans;
+    }
+
+};
+
+int main()
+{
+   ll n ;
+   sl(n);
+   ll *arr =new ll[n+1];
+   FOR(i,1,n+1,1)
+     sl(arr[i]);
+   Disjoint d(n , arr);
+   ll conn;
+   sl(conn);
+   while(conn--)
+   {
+       ll u , v;
+       sl(u) , sl(v);
+       d.find_union(u , v);
+   }
+   cout << d.find_ans(arr , n) << endl;
+   return 0;
+}
