@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+#include<stdlib.h>
+#define pb push_back
+#define pp pair
+
+#define mod 1000000007
+#define ll long long
+#define pie 3.141592653589793
+#define sc(a) scanf("%c",&a)
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define F first
+#define S second
+#define INF 0x3f3f3f3f
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+#define RFOR(i,j,k,dc) for(ll i=j ; i>=k; i=i-dc)
+template<typename T> T gcd(T a, T b){return (b?__gcd(a,b):a);}
+template<typename T> T lcm(T a, T b){return (a*(b/gcd(a,b)));}
+template<typename T> T max(T a, T b){return (a>b) ? a : b ;}
+template<typename T> T min(T a, T b){return (a<b) ? a : b ;}
+using namespace std;
+
+class Disjoint
+{
+   private:
+       ll *parent;
+       ll *sz;
+
+   public:
+    Disjoint(ll n)
+    {
+        parent = new ll[n+1];
+        sz = new ll[n+1];
+        FOR(i,1,n+1 ,1)
+        {
+            parent[i]=i , sz[i] =1;
+        }
+    }
+
+    ll find_parent(ll x)
+    {
+        if(x == parent[x])
+            return x;
+        return find_parent(parent[x]);
+    }
+    void union_parent(ll a , ll b)
+    {
+        if(find_parent(a) == find_parent(b))
+             return;
+
+         if(sz[find_parent(a)] < sz[find_parent(b)])
+         {
+             sz[find_parent(b)] += sz[find_parent(a)];
+             parent[find_parent(a)] = find_parent(b);
+         }
+         else
+         {
+             sz[find_parent(a)] += sz[find_parent(b)];
+             parent[find_parent(b)] = find_parent(a);
+
+
+         }
+    }
+ ll find_combination(ll n)
+    {
+        unordered_map <ll , ll> mp;
+        ll res=1;
+        for(int i=1 ; i<=n ; i++)
+        {
+           mp[find_parent(i)]++;
+        }
+        for(auto i1=mp.begin() ; i1 != mp.end() ; i1++)
+        {
+            res = (res * (i1->second)) %mod;
+        }
+        return res%mod;
+    }
+
+};
+int main()
+{
+    ios_base::sync_with_stdio(false);
+     cin.tie(NULL);
+   ll n , m , u , v;
+   sl(n) , sl(m);
+   Disjoint d(n);
+   while(m--)
+   {
+       sl(u) , sl(v);
+       d.union_parent(u , v);
+   }
+   cout << d.find_combination(n) << endl;
+   return 0;
+}
