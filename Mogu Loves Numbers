@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+#define ll long long
+#define pie 3.141592653589793
+#define sc(a) scanf("%c",&a)
+#define si(a) scanf("%d",&a)
+#define ss(a) scanf("%s",a)
+#define sl(a) scanf("%lld",&a)
+#define all(c) c.begin(), c.end()
+#define pi(a) printf("%d",a)
+#define pc(a) printf("%c",a)
+#define pl(a) printf("%lld",a)
+#define ps(a) printf("%s",a)
+#define FOR(i,j,k,in) for(ll i=j ; i<k ; i=i+in)
+using namespace std;
+const ll N = 1000001;
+vector <ll> primes , output , ct;
+vector <bool> flag;
+
+
+void pass()
+{
+    flag.resize(N);
+    ct.resize(N+4);
+    flag.assign(N , true);
+}
+void seive()
+{
+   for(ll i = 3 ; i*i <=N ; i =i+2)
+   {
+       if(flag[i])
+       {
+           FOR(j,i*i,N,i*2)
+           {
+               flag[j] = false;
+           }
+       }
+   }
+   primes.push_back(2);
+   ct[0]=ct[1]=0;
+   ct[2]=1;
+   for(ll i=3 ; i<=N ; i=i+2)
+   {
+       if(flag[i])
+       {
+        ct[i] =ct[i+1] =ct[i-1]+1;
+        primes.push_back(i);
+       }
+       else
+        ct[i] =ct[i+1] =ct[i-1];
+   }
+
+}
+using namespace std;
+
+int main()
+{
+    
+    pass();
+    seive();
+    ll test;
+    sl(test);
+    while(test--)
+    {
+        ll u , v;
+        sl(u) , sl(v);
+        if(u > v)
+            swap(u,v);
+        cout << ct[v] - ct[u-1] << endl;
+
+    }
+   return 0;
+}
