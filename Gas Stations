@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+int main()
+{
+    ll N , p;
+    cin >> N >> p;
+    ll c=0;
+    for(int i=1 ; i<=N ; i++)
+    {
+        ll val;
+        cin >> val;
+        p =p-val;
+
+        if(p < 0)
+            p =0;
+
+        c++;
+        if(p == 0)
+            break;
+    }
+    cout << c;
+}
